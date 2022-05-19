@@ -1,27 +1,57 @@
-# BlocksplitDappWorkshop
+# BlockSplit dApp Workshop 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.6.
+## Development
 
-## Development server
+```
+# install dependencies
+npm install
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+# run development server
+npm start
+```
+
+Navigate to `http://localhost:4200/` to open the app. 
 
 ## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```
+# generate a component
+ng g c my-component
+
+# generate a service
+ng g s shared/my-service
+
+# generate a feature state (Akita)
+ng g @datorama/akita:af my-feature/my-feature --plain --entityService=default
+```
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```
+# generate production build. produced artifacts
+# will be located in `/dist` directory
+npm run build
+```
 
-## Running unit tests
+### Try production build
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```
+# serve and open in a browser
+npm run serve-build
+```
 
-## Running end-to-end tests
+## Lint & Test
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```
+# run linter (eslint)
+npm run lint
 
-## Further help
+# run linter and fix issues
+npm run lint:fix
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# run tests
+npm run test
+```
+
+There are precommit rules set by [husky](https://github.com/typicode/husky). For more information, check the [docs](https://typicode.github.io/husky/#/).
+

@@ -1,0 +1,28 @@
+<div class="px-4 py-2 max-w-screen-lg mx-auto">
+  <div class="bg-white my-8 p-6 rounded-4xl">
+    <h1 class="my-2 text-2xl uppercase">
+      Welcome
+    </h1>
+
+    <p class="mt-4" *ngIf="(isLoggedIn$ | async) === false">
+      You are using a web3-enabled application. Log in to proceed.
+    </p>
+
+    <ng-container *ngIf="(isLoggedIn$ | async) === true">
+      <div class="flex items-baseline gap-1.5 flex-wrap mt-4"
+           *ngIf="(address$ | async) as address">
+        <span>You are connected with</span>
+        <span class="text-sm">
+          {{ address | addrShort }}
+        </span>
+        <app-value-copy [value]="address"></app-value-copy>
+        <app-explorer-link [value]="address">
+        </app-explorer-link>
+      </div>
+
+      <p class="mt-2">
+        Let's start building!
+      </p>
+    </ng-container>
+  </div>
+</div>

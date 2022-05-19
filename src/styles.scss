@@ -1,0 +1,90 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.snow.css';
+/* You can add global styles to this file, and also import other style files */
+
+//@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+@import '~@angular/material/theming';
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap');
+
+@include mat-core();
+$candy-app-primary: mat-palette($mat-indigo);
+$candy-app-accent: mat-palette($mat-pink, A200, A100, A400);
+
+$candy-app-warn: mat-palette($mat-red);
+$candy-app-theme: mat-light-theme((
+  color: (
+    primary: $candy-app-primary,
+    accent: $candy-app-accent,
+    warn: $candy-app-warn,
+  )
+));
+
+@include angular-material-theme($candy-app-theme);
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+}
+
+button, textarea, input, select, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ql-toolbar {
+  @apply border-gray-400 border-2 rounded-t-lg;
+}
+
+.ql-container {
+  @apply border-gray-400 border-2 rounded-b-lg;
+}
+
+.ql-editor {
+  width: 100%;
+  overflow-x: hidden;
+
+  @apply text-base;
+  font-family: 'Manrope', sans-serif;
+
+  h1 {
+    @apply pb-4 text-cyan-700 text-xl font-bold;
+  }
+
+  h2 {
+    @apply pb-4 text-cyan-700 text-lg font-bold;
+  }
+
+  pre.ql-syntax {
+    @apply bg-blue-50 text-base font-mono #{!important};
+    color: inherit !important;
+  }
+
+  .ql-video {
+    width: 100%;
+    min-height: 400px;
+  }
+}
+
+/* Remove editor padding when only showing rich text */
+.ngx-quill-view > div.ql-editor {
+  @apply p-0;
+}
+
+/* Required for material dialogs */
+.mat-rounded-4xl .mat-dialog-container {
+  @apply rounded-4xl
+}
+
+.app-button {
+  @apply bg-gradient-to-r from-sky-600 to-cyan-500
+  text-white font-semibold px-4 py-3 rounded-full
+  hover:from-sky-700 hover:to-cyan-600
+  disabled:from-gray-300 disabled:to-gray-300
+}
