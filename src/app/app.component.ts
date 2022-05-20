@@ -3,7 +3,6 @@ import {filter, first, switchMap, tap} from 'rxjs/operators'
 import {SwUpdate, VersionReadyEvent} from '@angular/service-worker'
 import {concat, defer, from, interval} from 'rxjs'
 import {DialogService} from './shared/services/dialog.service'
-import {Title} from '@angular/platform-browser'
 
 @Component({
   selector: 'app-root',
@@ -13,7 +12,6 @@ import {Title} from '@angular/platform-browser'
 export class AppComponent {
   constructor(public updates: SwUpdate,
               private appRef: ApplicationRef,
-              private title: Title,
               private dialog: DialogService) {
   }
 
