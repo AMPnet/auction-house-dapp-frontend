@@ -3,6 +3,9 @@
 ## Development
 
 ```
+# ensure you use node version ^14 or ^16
+nvm use 14
+
 # install dependencies
 npm install
 
