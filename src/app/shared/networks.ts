@@ -21,7 +21,8 @@ export interface Network {
 }
 
 interface AppConfig {
-  // TODO: set app config
+  auctionHouseService: string
+  queryService: string
 }
 
 export const MumbaiNetwork: Network = {
@@ -40,7 +41,10 @@ export const MumbaiNetwork: Network = {
     'wss://ws-matic-mumbai.chainstacklabs.com',
   ],
   explorerURLs: ['https://mumbai.polygonscan.com/'],
-  appConfig: {},
+  appConfig: {
+    auctionHouseService: '0x80a9fe68Bfce8CF18f1c132C14ff20540277Acfe',
+    queryService: '0xf0F3E3b59dE1d4E072D613669bC4Ee6De2f74624',
+  },
 }
 
 export const Networks: { [key in ChainID]: Network } = {

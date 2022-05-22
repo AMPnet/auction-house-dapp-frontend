@@ -19,10 +19,29 @@
         <app-explorer-link [value]="address">
         </app-explorer-link>
       </div>
+    </ng-container>
 
-      <p class="mt-2">
-        Let's start building!
-      </p>
+    <ng-container *ngIf="(auctionHouse$ | withStatus | async) as auctionHouseRes">
+      <ng-container *ngIf="auctionHouseRes.value as auctionHouse">
+        <div class="mt-4">
+          <div class="mt-2">
+            Contract address: {{ auctionHouse.contractAddress }}
+          </div>
+
+          <div class="mt-2">
+            Owner: {{ auctionHouse.owner }}
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="auctionHouseRes.error">
+        Cannot fetch auction house.
+        <div hidden>{{ auctionHouseRes.error | json }}</div>
+      </ng-container>
+
+      <ng-container *ngIf="auctionHouseRes.loading">
+        Loading auction house...
+      </ng-container>
     </ng-container>
   </div>
 </div>
