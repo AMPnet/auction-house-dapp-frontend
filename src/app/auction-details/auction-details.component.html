@@ -15,16 +15,128 @@
         </div>
 
         <div>
-          Created at: {{ (auction.createdAt | formatUnit:'toNumber') * 1000 | date }}
+          Created at: {{ (auction.createdAt | formatUnit:'toNumber') * 1000 | date:'medium' }}
         </div>
 
         <div>
-          Can be closed at: {{ (auction.endsAt | formatUnit:'toNumber') * 1000 | date }}
+          Ends at: {{ (auction.endsAt | formatUnit:'toNumber') * 1000 | date:'medium' }}
         </div>
 
         <div>
           Status: {{ auction.closed ? 'Closed' : 'Open' }}
         </div>
+
+        <ng-container *ngIf="(auction.auctionToken | assetData | async) as auctionToken">
+          <div class="flex gap-1 items-baseline mt-2">
+            <span>Auction token: {{ auctionToken.symbol }}</span>
+            <span class="text-sm">
+              {{ auctionToken.address | addrShort }}
+            </span>
+            <app-value-copy [value]="auctionToken.address"></app-value-copy>
+            <app-explorer-link [value]="auctionToken.address" type="token">
+            </app-explorer-link>
+            <app-add-to-metamask [value]="auctionToken.address">
+            </app-add-to-metamask>
+          </div>
+
+          <div class="flex items-baseline gap-1.5 flex-wrap mt-2">
+            <span>Highest bidder amount:</span>
+            <span class="text-sm">
+              {{ auction.highestBidderAmount
+              | formatUnit:'token':auctionToken.decimals
+              | currencyDefault:auctionToken.symbol }}
+            </span>
+          </div>
+
+          <div class="flex items-baseline gap-1.5 flex-wrap mt-2">
+            <span>Highest bidder:</span>
+            <span class="text-sm">
+              {{ auction.highestBidderAddress | addrShort }}
+            </span>
+            <app-value-copy [value]="auction.highestBidderAddress" [delay]="800">
+            </app-value-copy>
+            <app-explorer-link [value]="auction.highestBidderAddress">
+            </app-explorer-link>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="(timeNow$ | async) as timeNow">
+          <ng-container *ngIf="timeNow <= (auction.endsAt | formatUnit:'toNumber') * 1000">
+            <form [formGroup]="bidForm">
+              <ng-container *ngIf="(bidState$ | async) as bidState">
+                <!-- Token box -->
+                <div class="mt-5 bg-gray-200/20 border-gray-300/50 border-[1px] rounded-lg px-2 pb-1
+                              max-w-md">
+                  <span class="flex justify-end mt-2 text-xxs font-medium text-gray-400">
+                    Bid amount of {{ bidState.tokenData.symbol }}
+                  </span>
+
+                  <div class="flex justify-between">
+                    <div class="flex items-center">
+                      <div class="flex rounded-full items-center bg-white shadow">
+                        <span class="ml-1 mr-3 font-medium whitespace-nowrap">
+                          {{ bidState.tokenData.symbol }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <input class="w-full py-0 pr-0 text-right bg-transparent border-none focus:ring-0 text-3xl
+                                text-ellipsis	placeholder:text-gray-400"
+                           formControlName="amount"
+                           appBigNumberInput bigNumberType="token"
+                           [tokenPrecision]="bidState.tokenData.decimals">
+                  </div>
+
+                  <div class="flex">
+                    <div class="flex items-center min-h-[1rem] mt-2 flex-1">
+                      <ng-container *ngIf="bidForm?.invalid">
+                        <span class="text-red-600 text-xs font-semibold">
+                          <ng-container *ngIf="bidForm.errors?.tokenAmountAboveBalance">
+                            The amount exceeds your token balance.
+                          </ng-container>
+                        </span>
+                      </ng-container>
+                    </div>
+                  </div>
+
+                  <div class="flex justify-between items-center mt-5 text-xxs font-medium">
+                    <div>
+                      <span class="text-gray-400" *ngIf="bidState.balance">
+                        Balance: {{ bidState.balance
+                        | formatUnit:'token':bidState.tokenData.decimals
+                        | currencyDefault:bidState.tokenData.symbol }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <button app-action-button
+                          class="app-button"
+                          [hidden]="(shouldApprove$ | async) !== true"
+                          [disabled]="bidForm.invalid"
+                          [onClick]="approveAmount(bidState).bind(this)"
+                          text="Approve">
+                  </button>
+
+                  <button app-action-button
+                          class="app-button"
+                          [hidden]="(shouldBid$ | async) !== true"
+                          [disabled]="bidForm.invalid"
+                          [onClick]="createBid(bidState).bind(this)"
+                          text="Create bid">
+                  </button>
+                </div>
+              </ng-container>
+            </form>
+          </ng-container>
+
+          <ng-container *ngIf="timeNow > (auction.endsAt | formatUnit:'toNumber') * 1000">
+            <div>
+              Bid time period has ended.
+            </div>
+          </ng-container>
+        </ng-container>
       </ng-container>
 
       <ng-container *ngIf="auctionRes.error">
