@@ -4,13 +4,14 @@ import {PreferenceQuery} from '../preference/state/preference.query'
 import {Auction, QueryService} from '../shared/services/blockchain/query.service'
 import {ActivatedRoute, Router} from '@angular/router'
 import {BigNumber, constants} from 'ethers'
-import {BehaviorSubject, combineLatest, Observable, of, switchMap, timer} from 'rxjs'
+import {BehaviorSubject, combineLatest, merge, Observable, of, switchMap, timer} from 'rxjs'
 import {catchError, debounceTime, distinctUntilChanged, map, shareReplay, startWith, take, tap} from 'rxjs/operators'
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors} from '@angular/forms'
 import {DialogService} from '../shared/services/dialog.service'
 import {Erc20Service, ERC20TokenData} from '../shared/services/blockchain/erc20.service'
 import {ConversionService} from '../shared/services/conversion.service'
 import {AuctionService} from '../shared/services/blockchain/auction.service'
+import {contractEvent} from '../shared/utils/ethersjs'
 
 @Component({
   selector: 'app-auction-details',
@@ -45,11 +46,20 @@ export class AuctionDetailsComponent {
               private queryService: QueryService) {
     const auctionAddress = this.route.snapshot.params.id
 
+    const auctionContract = this.auctionService.contract(auctionAddress, this.sessionQuery.provider)
+
     this.auction$ = combineLatest([
-      this.refreshAuctionSub.asObservable(),
       this.address$,
+      this.refreshAuctionSub.asObservable(),
+      merge(
+        of(undefined),
+        contractEvent(auctionContract, auctionContract.filters.AuctionEnded()),
+        contractEvent(auctionContract, auctionContract.filters.Harvest()),
+        contractEvent(auctionContract, auctionContract.filters.HighestBidIncreased()),
+        contractEvent(auctionContract, auctionContract.filters.Withdraw()),
+      ),
     ]).pipe(
-      switchMap(([_, userAddress]) => this.queryService.getAuctionDetailsData(
+      switchMap(([userAddress]) => this.queryService.getAuctionDetailsData(
           auctionAddress,
           userAddress || constants.AddressZero,
         ),
