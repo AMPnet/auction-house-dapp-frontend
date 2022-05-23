@@ -1,0 +1,80 @@
+<div class="w-full h-full flex justify-center mt-8 px-2 pb-8">
+  <div class="w-full max-w-6xl">
+    <div class="flex flex-col gap-2 w-full justify-start bg-white rounded-4xl p-8">
+      <form [formGroup]="createForm">
+        <h1 class="text-2xl text-indigo-900 mb-8">
+          New Auction
+        </h1>
+
+        <div class="flex flex-col gap-2 mt-4">
+          <label class="text-lg font-semibold" for="name">
+            Name
+          </label>
+          <input class="border-gray-400 rounded-lg" type="text"
+                 formControlName="name" id="name"
+                 autocomplete="off">
+        </div>
+
+        <div class="flex flex-col gap-2 mt-4">
+          <label class="text-lg font-semibold" for="description">
+            Description
+          </label>
+          <input class="border-gray-400 rounded-lg" type="text"
+                 formControlName="description" id="description"
+                 autocomplete="off">
+        </div>
+
+        <div class="flex flex-col gap-2 mt-4">
+          <label class="text-lg font-semibold" for="auction-token">
+            Auction token address
+          </label>
+          <input class="border-gray-400 rounded-lg" type="text"
+                 formControlName="auctionToken" id="auction-token"
+                 autocomplete="off">
+        </div>
+
+        <div class="flex flex-col gap-2 mt-4">
+          <label class="text-lg font-semibold" for="beneficiary">
+            Beneficiary address
+          </label>
+          <input class="border-gray-400 rounded-lg" type="text"
+                 formControlName="beneficiary" id="beneficiary"
+                 autocomplete="off">
+        </div>
+
+        <div class="flex flex-col gap-2 mt-4">
+          <label class="text-lg font-semibold" for="min-bid">
+            Minimum bid
+          </label>
+          <input class="border-gray-400 rounded-lg" id="min-bid"
+                 type="number" min="0" formControlName="minBid">
+        </div>
+
+        <div class="flex flex-col gap-2 mt-4">
+          <label class="text-lg font-semibold" for="duration">
+            Duration
+          </label>
+          <input class="border-gray-400 rounded-lg" id="duration"
+                 type="number" min="0" formControlName="duration">
+        </div>
+
+        <div class="flex justify-center lg:justify-end mt-8">
+          <button app-action-button
+                  class="flex items-center justify-center gap-4 bg-indigo-800 disabled:bg-gray-400 text-white
+                         px-24 py-2 rounded-full"
+                  text="Done"
+                  [disabled]="!createForm.valid"
+                  [onClick]="create.bind(this)">
+            <ng-template #content>
+              <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.1665 6.83398L4.49984 10.1673L12.8332 1.83398" stroke="white" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="font-semibold tracking-wider">Done</span>
+            </ng-template>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

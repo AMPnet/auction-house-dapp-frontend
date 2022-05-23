@@ -31,6 +31,38 @@
           <div class="mt-2">
             Owner: {{ auctionHouse.owner }}
           </div>
+
+          <div class="mt-2 divide-y-2">
+            <div>
+              Auctions
+            </div>
+
+            <div *ngFor="let auction of auctionHouse.auctions">
+              <div>
+                Name: {{ auction.name }}
+              </div>
+
+              <div>
+                Auction address: {{ auction.contractAddress }}
+              </div>
+
+              <div>
+                Created at: {{ (auction.createdAt | formatUnit:'toNumber') * 1000 | date }}
+              </div>
+
+              <div>
+                Can be closed at: {{ (auction.endsAt | formatUnit:'toNumber') * 1000 | date }}
+              </div>
+
+              <div>
+                Status: {{ auction.closed ? 'Closed' : 'Open' }}
+              </div>
+
+              <div>
+                Highest bid: {{ auction.highestBid }}
+              </div>
+            </div>
+          </div>
         </div>
       </ng-container>
 
@@ -43,5 +75,9 @@
         Loading auction house...
       </ng-container>
     </ng-container>
+
+    <button class="app-button mt-4" routerLink="/auctions/new">
+      New Auction
+    </button>
   </div>
 </div>

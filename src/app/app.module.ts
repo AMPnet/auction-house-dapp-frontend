@@ -58,6 +58,7 @@ import {AssetDataPipe} from './shared/pipes/asset-data.pipe'
 import {WithStatusPipe} from './shared/pipes/with-status.pipe'
 import {BlockTimePipe} from './shared/pipes/block-time.pipe'
 import {WrongNetworkComponent} from './shared/components/wrong-network/wrong-network.component'
+import {AuctionNewComponent} from './auction-new/auction-new.component'
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import {WrongNetworkComponent} from './shared/components/wrong-network/wrong-net
     LoadingDialogTransactionComponent,
     LoadingOverlayComponent,
     WrongNetworkComponent,
+    AuctionNewComponent,
   ],
   imports: [
     BrowserModule,
