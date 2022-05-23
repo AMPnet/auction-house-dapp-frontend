@@ -1,0 +1,40 @@
+<div class="px-4 py-2 max-w-screen-lg mx-auto">
+  <div class="bg-white my-8 p-6 rounded-4xl">
+    <h1 class="my-2 text-2xl uppercase">
+      Auction Details
+    </h1>
+
+    <ng-container *ngIf="(auction$ | withStatus | async) as auctionRes">
+      <ng-container *ngIf="auctionRes.value as auction">
+        <div>
+          Name: {{ auction.name }}
+        </div>
+
+        <div>
+          Auction address: {{ auction.contractAddress }}
+        </div>
+
+        <div>
+          Created at: {{ (auction.createdAt | formatUnit:'toNumber') * 1000 | date }}
+        </div>
+
+        <div>
+          Can be closed at: {{ (auction.endsAt | formatUnit:'toNumber') * 1000 | date }}
+        </div>
+
+        <div>
+          Status: {{ auction.closed ? 'Closed' : 'Open' }}
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="auctionRes.error">
+        Cannot fetch auction.
+        <div hidden>{{ auctionRes.error | json }}</div>
+      </ng-container>
+
+      <ng-container *ngIf="auctionRes.loading">
+        Loading auction...
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

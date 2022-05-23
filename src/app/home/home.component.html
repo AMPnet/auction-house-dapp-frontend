@@ -32,34 +32,28 @@
             Owner: {{ auctionHouse.owner }}
           </div>
 
-          <div class="mt-2 divide-y-2">
+          <div class="mt-2 max-w-md">
             <div>
               Auctions
             </div>
 
             <div *ngFor="let auction of auctionHouse.auctions">
-              <div>
-                Name: {{ auction.name }}
-              </div>
+              <div class="flex gap-2 justify-between p-2 bg-gray-200 rounded">
+                <div>
+                  {{ auction.name }}
+                </div>
 
-              <div>
-                Auction address: {{ auction.contractAddress }}
-              </div>
-
-              <div>
-                Created at: {{ (auction.createdAt | formatUnit:'toNumber') * 1000 | date }}
-              </div>
-
-              <div>
-                Can be closed at: {{ (auction.endsAt | formatUnit:'toNumber') * 1000 | date }}
-              </div>
-
-              <div>
-                Status: {{ auction.closed ? 'Closed' : 'Open' }}
-              </div>
-
-              <div>
-                Highest bid: {{ auction.highestBid }}
+                <a routerLink="/auctions/{{ auction.contractAddress }}"
+                   class="rounded-full p-2 bg-cyan-500 text-white
+                          text-sm font-semibold uppercase
+                          flex items-center">
+                  <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg"
+                       class="w-2 h-2">
+                    <path d="M1 1.16602L6.83333 6.99935L1 12.8327" stroke="white" stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
@@ -67,12 +61,16 @@
       </ng-container>
 
       <ng-container *ngIf="auctionHouseRes.error">
-        Cannot fetch auction house.
+        <div>
+          Cannot fetch auction house.
+        </div>
         <div hidden>{{ auctionHouseRes.error | json }}</div>
       </ng-container>
 
       <ng-container *ngIf="auctionHouseRes.loading">
-        Loading auction house...
+        <div>
+          Loading auction house...
+        </div>
       </ng-container>
     </ng-container>
 

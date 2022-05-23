@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router'
 import {HomeComponent} from './home/home.component'
 import {AppLayoutComponent} from './app-layout/app-layout.component'
 import {AuctionNewComponent} from './auction-new/auction-new.component'
+import {AuctionDetailsComponent} from './auction-details/auction-details.component'
 
 const routes: Routes = [
   {
@@ -10,6 +11,7 @@ const routes: Routes = [
       {path: '', pathMatch: 'full', redirectTo: 'home'},
       {path: 'home', component: HomeComponent},
       {path: 'auctions/new', component: AuctionNewComponent},
+      {path: 'auctions/:id', component: AuctionDetailsComponent},
     ],
   },
   {path: '**', redirectTo: '/home'},

@@ -38,15 +38,14 @@ export class QueryService {
       )),
   )
 
-  getAuctionDetailsData(bidder: string): Observable<Auction> {
+  getAuctionDetailsData(auctionAddress: string, bidder: string): Observable<Auction> {
     return this.contract$.pipe(
-      switchMap(contract => contract.getAuctionDetailsData(
-        this.preferenceQuery.network.appConfig.auctionHouseService,
-        bidder),
+      switchMap(contract =>
+        contract.getAuctionDetailsData(auctionAddress, bidder),
       ),
     )
   }
 }
 
 type AuctionHouse = IQueryService.AuctionHouseDataStructOutput
-type Auction = IQueryService.AuctionDetailsDataStructOutput
+export type Auction = IQueryService.AuctionDetailsDataStructOutput

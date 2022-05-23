@@ -36,7 +36,7 @@ export const MumbaiNetwork: Network = {
   maxGasPrice: 20,
   rpcURLs: ['https://rpc-mumbai.maticvigil.com'],
   wssRpcURLs: [
-    'wss://ws-nd-673-584-255.p2pify.com/6eba79da2c02fb3ca5985cc6e95ebd53',
+    // 'wss://ws-nd-673-584-255.p2pify.com/6eba79da2c02fb3ca5985cc6e95ebd53',
     'wss://polygon-mumbai.g.alchemy.com/v2/w8tKRA88CQYBQEwGO2HlKKHtSD_qHOoU',
     'wss://ws-matic-mumbai.chainstacklabs.com',
   ],
