@@ -58,6 +58,15 @@
             <app-explorer-link [value]="auction.highestBidderAddress">
             </app-explorer-link>
           </div>
+
+          <div class="flex items-baseline gap-1.5 flex-wrap mt-2">
+            <span>Amount to withdraw:</span>
+            <span class="text-sm">
+              {{ auction.pendingReturnsAmount
+              | formatUnit:'token':auctionToken.decimals
+              | currencyDefault:auctionToken.symbol }}
+            </span>
+          </div>
         </ng-container>
 
         <ng-container *ngIf="(timeNow$ | async) as timeNow">
@@ -136,6 +145,15 @@
               Bid time period has ended.
             </div>
           </ng-container>
+
+          <div>
+            <button app-action-button
+                    class="app-button mt-2"
+                    [hidden]="(shouldWithdraw$ | async) !== true"
+                    [onClick]="withdraw(auction.contractAddress).bind(this)"
+                    text="Withdraw">
+            </button>
+          </div>
         </ng-container>
       </ng-container>
 

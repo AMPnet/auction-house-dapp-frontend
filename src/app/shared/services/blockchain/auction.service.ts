@@ -44,4 +44,20 @@ export class AuctionService {
       this.errorService.handleError(false, true),
     )
   }
+
+  withdraw(auctionAddress: string) {
+    return this.signerService.ensureAuth.pipe(
+      switchMap(signer => this.dialogService.waitingApproval(
+        of(this.contract(auctionAddress, signer)).pipe(
+          switchMap(contract => combineLatest([of(contract), this.gasService.overrides])),
+          switchMap(([contract, overrides]) => contract.populateTransaction.withdraw(overrides)),
+          switchMap(tx => this.signerService.sendTransaction(tx)),
+        ),
+      )),
+      switchMap(tx => this.dialogService.waitingTransaction(
+        from(this.sessionQuery.provider.waitForTransaction(tx.hash)),
+      )),
+      this.errorService.handleError(false, true),
+    )
+  }
 }

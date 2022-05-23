@@ -31,6 +31,7 @@ export class AuctionDetailsComponent {
   bidState$: Observable<BidState | undefined>
   shouldApprove$: Observable<boolean>
   shouldBid$: Observable<boolean>
+  shouldWithdraw$: Observable<boolean>
 
   constructor(private sessionQuery: SessionQuery,
               private preferenceQuery: PreferenceQuery,
@@ -106,6 +107,13 @@ export class AuctionDetailsComponent {
       distinctUntilChanged(),
     )
 
+    this.shouldWithdraw$ = combineLatest([
+      this.auction$,
+    ]).pipe(
+      map(([auction]) => auction.pendingReturnsAmount.gt(constants.Zero)),
+      distinctUntilChanged(),
+    )
+
     this.shouldBid$ = combineLatest([
       this.shouldApprove$,
     ]).pipe(
@@ -158,6 +166,17 @@ export class AuctionDetailsComponent {
       return this.auctionService.bid(state.auctionAddress, tokenAmount).pipe(
         switchMap(() => this.dialogService.success({
           message: 'Bid has been placed.',
+        })),
+        tap(() => this.refreshAuctionSub.next()),
+      )
+    }
+  }
+
+  withdraw(auctionAddress: string) {
+    return () => {
+      return this.auctionService.withdraw(auctionAddress).pipe(
+        switchMap(() => this.dialogService.success({
+          message: 'Bid has been withdrawn.',
         })),
         tap(() => this.refreshAuctionSub.next()),
       )
